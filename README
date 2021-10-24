@@ -1,0 +1,108 @@
+#Comana Marian Georgian (georgiancomana1119@gmail.com)
+# Copyright 2020
+
+Problema 1:
+    Solutia problemei :
+------------------------------------------------------------------------------------
+Problema presupune aranjarea unui set fix de bancnote in anumite moduri dependente
+de anumite instructiuni.Avem 2 seturi de instructiuni dupa care ne vom ghida.
+Instructiunea 1:
+    -Acest set de instructiuni este fix si presupune ca peste oricare bancnota se 
+    poate aseza oricare alte 2 bancnote. De aici putem trage concluzia ca la fie-
+    care mod nou in care putem aseza bancnotele(asta insemnand sa mai punem o alta
+    bancnota peste) vor iesi alte 2 cazuri.
+    ==> vom avea 2^(N - 1) * M moduri, unde N este numarul de bancnote pe care le
+    vrem suprapuse iar M este numarul de bancnote.
+    -Pentru a calcula aceasta expresie am folosit exponentierea logaritmica care se
+    bazeaza pe a impartii mereu exponentul la 2 si de a inmulti baza cu ea insasi
+    (cazul in care N - 1 este par iar in cazul in care este impar vom face ridica-
+    rea la putere clasica si vom scadea exponentul pana cand ajunge par.)
+    -Aceasta metoda are complexitatea in O(logN) deoarece algoritmul se va repeta
+    cat timp N - 1 > 0, unde N - 1 se va injumatatii aproape la fiecare pas(ca-
+    zul imparelor).
+Instructiunea 2:
+    -Acest set de instructiuni variaza, in sensul ca, dupa bancnota 200 urmeaza 3
+    alt bancnote. Deci, pentru fiecare bancnota asezata peste vom avea sansa sa
+    urmeze o bancnota de 200 si de a urma la randul ei 3, fapt ce ne duce la gan-
+    dul ca nu mai merge expresia anterioara.
+    -Atunci a trebuit sa abordez o alta metoda iar metoda abordata este programa-
+    rea dinamica.
+    -Ideea este destul de simpla, cand avem o singura bancnota o putem aseza
+    intr-un singur mod. Cand o sa avem 2 bancnote va trebui sa ne uitam la bancno-
+    tele peste care putem aseza bancnota pe care o "avem in mana" si sa adunam toa-
+    te acele posibilitati.
+    -Rezultatul va fi suma tuturor modurilor prin care fiecare bancnota va fi pu-
+    sa peste precedenta ei.
+    -Aceasta metoda are complexitatea O(5 * N), adica O(N), parcurgerea in sine,
+    consideram ca operatiile de adunare, modulo se realizeaza in O(1).
+------------------------------------------------------------------------------------
+Problema 2:
+    Solutia problemei :
+------------------------------------------------------------------------------------
+Problema presupune "gasirea unor bucati de scandura ce sunt acoperite de alte buca-
+ti de scandura mai mari".Acesta este textul problemei dar ea se rezuma la inchideri
+de intervale.Consideram axa numerelor reale Ox. Consideram un caz particular:
+1. Scandura 1 => X1 = 0, X2 = 3;
+2. Scandura 2 => X2 = 1, X2 = 2;
+Scandura 2 va fi inclusa in scandura 1 deoarece capetele 0 si 3, sunt mai indepar-
+tate de capete 1 si 2 in directia respectiva.
+Problema aceasta am rezolvat-o prin metoda Greedy, iar ideea este urmatoarea :
+    -Fie multimea scandurilor Si, i = 1 , n;
+    -Vom avea ca punct de referinta prima scandura.
+    -Pentru a ne simplifica problema vom sorta capatul inferior al fiecarei scan-
+    duri astfel nu ne va interesa decat capatul superior in care vom putea incadra
+    scandura S2 fata de S1.
+    -Dupa ce-am sortat, ne mai ramane sa iteram prin toate celelalte scanduri rama-
+    se, si sa observam cateva lucruri precum:
+        1.Daca scandura S2 are capatul superior <= decat capatul superior al scan-
+        durei S1, atunci S2 este inclusa in S1.
+        2.Daca scandura S2 are capatul superior mai mare decat capatul superior al
+        scandurei S1, atunci noua scandura pe care o vom avea ca punct de referin-
+        ta este scandura S2.
+        3.Algoritmul continua pana la ultima scandura din multime.
+    -Rezultatul problemei va fi numarul total de scanduri ce sunt incluse in scan-
+    durile ce se afla in multime.
+    ==> Complexitatea acestui algoritm este O(N * logn), N este numarul de scanduri,
+    parcurgerea se face in O(N), verificarea conditiilor se realizeaza instant
+    iar celelalte operatii(adunari, interschimbari de valori) se realizeaza in O(1).
+------------------------------------------------------------------------------------
+Problema 3:
+    Solutia problemei:
+------------------------------------------------------------------------------------
+Problema 3 presupunea impartirii "unui numar de bomboane" pentru fiecare "copil"
+care a rezolvat un numar de probleme.Textul problemei ne ofera un interval de proble-
+me pe care copilul le-a facut, in concluzie n-avem un numar fix pe care-l putem
+impartii fiecarui copil si va trebui sa facem combinatii specifice pentru a calcula
+multimea modurilor prin care bomboanele pot fi impartite copiilor.
+Mai pe scurt, avand un numar de bomboane (M) si un numar de copii (N) va trebui sa 
+gasim multimea B = {(k1, k2, ki) / i = N iar k1 + k2 + k3 + .. + ki = M} si sa cal-
+culam cardinal(B), fiecare copil avand la dispozitie un interval (P1 Pn) de proble-
+me rezolvate care vor reprezenta si numarul minim si maxim de bomboane care ii vor
+fi oferite.
+Solutia problemei consta in ideea de programare dinamica, astfel:
+    -Vom avea o matrice N X M, N-numarul de copiii, M-numarul de bomboane.
+    -Pentru simplificarea problemei vom considera ca am oferit numarul minim de bom-
+    boane fiecarui copil.
+    -In functie de cati copii avem si de cate bomboane avem putem impartii un numar
+    de bomboane fiecarui copil.
+    -Daca avem un singur copil si un numar de bomboane (G) putem sa ii impartim
+    bomboane astfel :
+        1.Atata timp cat G este mai mic decat capatul superior specific copilului
+        ii vom oferi numarul de bomboane G intr-un singur mod.
+        2.cand G trece de capatul superior nu ii vom putea oferii bomboane deoare-
+        ce el nu va putea lua G bomboane sau un numar partial.
+    -Daca avem oricati copiii si o bomboane vom putea oferi bomboana doar unuia din-
+    tre ei deci doar o singura modalitate avem.
+    -Daca avem mai multi copiii si mai multe bomboane vom oferii in felul urmator:
+        1.Daca avem un numar de copiii (i) si un numar de bomboane j atunci modali-
+        tatea prin care vom putea impartii bomboanele fiecarui copil este dat de
+        ideea ca vom aduna toate posibilitatile de oferit bomboane ca atunci cand
+        avem i - 1 copiii, iar numarul de bomboane la numarul de copiii  i - 1 va
+        fi mai mic  decat capatul superior al copilului i - 1 si mai mare decat
+        capatul supe-rior al copilului i - capatul superior al copilui i - 1.
+    -Rezultatul final va fi in ultima celula din matricea pe care am folosit-o.
+    ==>Complexitatea acestui algoritm este O(M ^ 2), deoarece iterarea prin matri-
+    ce va fi O(N * M) iar calculul pentru fiecare numar de bomboane la numarul de 
+    copiii (i - 1) in worse case poate fi tot M deci va fi O(N * M ^ 2) ==> O(M ^ 2).
+-------------------------------------------------------------------------------------
+Structuri folosite: Vectorii din stl, vectori alocati dinamic, clase, structuri.
